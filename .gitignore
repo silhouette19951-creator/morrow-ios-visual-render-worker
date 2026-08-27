@@ -1,7 +1,7 @@
 .private/
+encrypted-results/
 output/
 decrypted/
 *.jpg
 *.png
 *.tar.gz
-
