@@ -1,0 +1,96 @@
+appId: com.apple.mobileslideshow
+---
+- launchApp
+- waitForAnimationToEnd
+
+# Photos can finish its first-launch indexing after Maestro has already
+# attached. Wait for either the delayed onboarding card or the library UI.
+- extendedWaitUntil:
+    visible: ".*(Continue|继续|Library|图库|Photos|照片).*"
+    timeout: 30000
+
+# Fresh simulators can show one or more Photos introduction screens.
+- tapOn:
+    text: ".*(Continue|继续).*"
+    optional: true
+- waitForAnimationToEnd
+- tapOn:
+    text: ".*(Don.t Allow|不允许).*"
+    optional: true
+- waitForAnimationToEnd
+- tapOn:
+    text: ".*(Not Now|以后再说|稍后).*"
+    optional: true
+- waitForAnimationToEnd
+- tapOn:
+    text: ".*(Done|完成).*"
+    optional: true
+- waitForAnimationToEnd
+- tapOn:
+    text: ".*(Continue|继续).*"
+    optional: true
+- waitForAnimationToEnd
+- tapOn:
+    text: ".*(Not Now|以后再说|稍后|Customize Later|稍后自定).*"
+    optional: true
+- waitForAnimationToEnd
+- tapOn:
+    text: ".*(Done|完成).*"
+    optional: true
+- waitForAnimationToEnd
+- tapOn:
+    text: ".*(Library|图库).*"
+    optional: true
+- waitForAnimationToEnd
+
+# A fresh iOS 27 simulator contains six sample photos. The imported wallpaper
+# is the seventh image, placed at the bottom-left of the three-column grid.
+- tapOn:
+    point: "${PHOTO_POINT}"
+- waitForAnimationToEnd
+- takeScreenshot: output/selected-photo
+# iOS 26 can open a photo with its toolbar hidden. Reveal the native controls
+# only when the Share action is not already present; iOS 27 leaves it visible.
+- runFlow:
+    when:
+      notVisible: ".*(Share|共享).*"
+    commands:
+      - tapOn:
+          point: "50%,50%"
+      - waitForAnimationToEnd
+- tapOn:
+    text: ".*(Share|共享).*"
+- waitForAnimationToEnd
+- takeScreenshot: output/share-sheet
+
+# Let Maestro scroll the share sheet only when the action is not yet visible.
+- scrollUntilVisible:
+    element:
+      text: ".*(Use as Wallpaper|用作墙纸).*"
+    direction: DOWN
+    timeout: 20000
+    speed: 40
+- tapOn:
+    text: ".*(Use as Wallpaper|用作墙纸).*"
+- waitForAnimationToEnd
+- takeScreenshot: output/wallpaper-editor
+
+# Keep the first run conservative: accept Apple's default crop and style.
+- tapOn:
+    text: ".*(Add|添加).*"
+    optional: true
+- tapOn:
+    text: ".*(Set as Wallpaper Pair|设为墙纸组合).*"
+    optional: true
+- tapOn:
+    text: ".*(Done|完成).*"
+    optional: true
+- takeScreenshot: output/wallpaper-editor-result
+
+# The first lock press turns the simulated display off. The second wakes it
+# and reveals Apple's actual lock screen.
+- pressKey: lock
+- waitForAnimationToEnd
+- pressKey: lock
+- waitForAnimationToEnd
+- takeScreenshot: output/lockscreen-final

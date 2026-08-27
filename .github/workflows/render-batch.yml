@@ -1,0 +1,95 @@
+name: Render encrypted Morrow lock screens
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    name: Render ${{ matrix.id }}
+    runs-on: macos-26
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        include:
+          - id: 01-mist-cathedral
+            asset: assets-encrypted/01-mist-cathedral.jpg.enc
+          - id: 02-pearl-coast
+            asset: assets-encrypted/02-pearl-coast.jpg.enc
+          - id: 03-rosy-after-rain
+            asset: assets-encrypted/03-rosy-after-rain.jpg.enc
+          - id: 04-mirror-salt-moon
+            asset: assets-encrypted/04-mirror-salt-moon.jpg.enc
+          - id: 05-moonlit-glasshouse
+            asset: assets-encrypted/05-moonlit-glasshouse.jpg.enc
+
+    steps:
+      - name: Check out visual worker
+        uses: actions/checkout@v5
+
+      - name: Decrypt private wallpaper in runner memory
+        env:
+          MORROW_ASSET_KEY: ${{ secrets.MORROW_ASSET_KEY }}
+          SEALED_ASSET: ${{ matrix.asset }}
+        run: |
+          mkdir -p decrypted
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 \
+            -in "$SEALED_ASSET" \
+            -out decrypted/wallpaper.jpg \
+            -pass env:MORROW_ASSET_KEY
+
+      - name: Boot visual iPhone simulator
+        env:
+          DEVICE_HINT: Pro Max
+          WALLPAPER: decrypted/wallpaper.jpg
+        run: bash scripts/boot-simulator.sh
+
+      - name: Install visual controller
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Set real system wallpaper and capture lock screen
+        id: wallpaper_flow
+        continue-on-error: true
+        env:
+          PHOTO_POINT: 16%,52%
+        run: |
+          set -o pipefail
+          maestro test \
+            -e PHOTO_POINT="$PHOTO_POINT" \
+            --debug-output output/maestro-set-wallpaper \
+            flows/set-wallpaper.yaml \
+            2>&1 | tee output/set-wallpaper.log
+
+      - name: Capture visual state
+        if: always()
+        run: |
+          xcrun simctl io "$SIMULATOR_UDID" screenshot output/after-wallpaper-attempt.png || true
+          xcrun simctl list --json > output/simctl-list.json
+
+      - name: Seal visual proof and screenshots
+        if: always()
+        env:
+          MORROW_ASSET_KEY: ${{ secrets.MORROW_ASSET_KEY }}
+          RENDER_ID: ${{ matrix.id }}
+        run: |
+          tar -czf "render-$RENDER_ID.tar.gz" output
+          openssl enc -aes-256-cbc -salt -pbkdf2 -iter 200000 \
+            -in "render-$RENDER_ID.tar.gz" \
+            -out "sealed-render-$RENDER_ID.tar.gz.enc" \
+            -pass env:MORROW_ASSET_KEY
+
+      - name: Upload encrypted visual result
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: sealed-render-${{ matrix.id }}
+          path: sealed-render-${{ matrix.id }}.tar.gz.enc
+          if-no-files-found: error
+          retention-days: 1
+

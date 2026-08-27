@@ -1,0 +1,7 @@
+appId: com.apple.springboard
+---
+- pressKey: lock
+- waitForAnimationToEnd
+- pressKey: lock
+- waitForAnimationToEnd
+- takeScreenshot: output/maestro-lockscreen

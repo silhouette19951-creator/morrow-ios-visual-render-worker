@@ -1,0 +1,7 @@
+.private/
+output/
+decrypted/
+*.jpg
+*.png
+*.tar.gz
+
