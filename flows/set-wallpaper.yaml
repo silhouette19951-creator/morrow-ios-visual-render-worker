@@ -75,16 +75,27 @@ appId: com.apple.mobileslideshow
 - waitForAnimationToEnd
 - takeScreenshot: output/wallpaper-editor
 
-# Keep the first run conservative: accept Apple's default crop and style.
+# Pull Apple's native clock resize handle downward. This is the same gesture a
+# user performs in the iOS 26/27 wallpaper editor; it preserves real system UI.
+- swipe:
+    start: 93%,23%
+    end: 93%,43%
+    duration: 1200
+- waitForAnimationToEnd
+- takeScreenshot: output/wallpaper-editor-long-clock
+
 - tapOn:
     text: ".*(Add|添加).*"
     optional: true
+- waitForAnimationToEnd
 - tapOn:
     text: ".*(Set as Wallpaper Pair|设为墙纸组合).*"
     optional: true
+- waitForAnimationToEnd
 - tapOn:
     text: ".*(Done|完成).*"
     optional: true
+- waitForAnimationToEnd
 - takeScreenshot: output/wallpaper-editor-result
 
 # The first lock press turns the simulated display off. The second wakes it
