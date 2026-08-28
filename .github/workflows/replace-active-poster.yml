@@ -56,6 +56,7 @@ jobs:
       - name: Replace active poster provider but preserve native styling
         env:
           WALLPAPER: output/import-wallpaper.jpg
+          SOURCE_PROVIDER_HINT: com.apple.PhotosUIPrivate.PhotosPosterProvider
         run: bash scripts/replace-active-photo-poster.sh
 
       - name: Clear setup notice and capture real lock screen

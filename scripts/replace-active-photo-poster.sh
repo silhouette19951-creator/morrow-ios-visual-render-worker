@@ -28,12 +28,21 @@ if [[ ! -f "$database" ]]; then
   exit 1
 fi
 
-active_row="$(sqlite3 "$database" "SELECT p.UUID || '|' || p.providerId FROM poster p JOIN posterRoleMembership m ON m.posterUUID=p.UUID WHERE m.roleId='PRPosterRoleLockScreen' ORDER BY m.roleSortKey DESC LIMIT 1;")"
-poster_uuid="${active_row%%|*}"
-source_provider="${active_row#*|}"
-source_config="$structure_dir/Extensions/$source_provider/configurations/$poster_uuid"
+if [[ -n "${SOURCE_PROVIDER_HINT:-}" ]]; then
+  source_provider="$SOURCE_PROVIDER_HINT"
+  source_config="$(find "$structure_dir/Extensions/$source_provider/configurations" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
+  poster_uuid=""
+  if [[ -n "$source_config" ]]; then
+    poster_uuid="$(basename "$source_config")"
+  fi
+else
+  active_row="$(sqlite3 "$database" "SELECT p.UUID || '|' || p.providerId FROM poster p JOIN posterRoleMembership m ON m.posterUUID=p.UUID WHERE m.roleId='PRPosterRoleLockScreen' ORDER BY m.roleSortKey DESC LIMIT 1;")"
+  poster_uuid="${active_row%%|*}"
+  source_provider="${active_row#*|}"
+  source_config="$structure_dir/Extensions/$source_provider/configurations/$poster_uuid"
+fi
 
-if [[ -z "$poster_uuid" || "$source_provider" == "$active_row" || ! -d "$source_config" ]]; then
+if [[ -z "$poster_uuid" || ! -d "$source_config" ]]; then
   echo "The active lock-screen configuration was not found." >&2
   exit 1
 fi
@@ -140,6 +149,7 @@ fi
 echo "Device root: $device_root" > output/replaced-active-poster.txt
 echo "Store structure: $structure_dir" >> output/replaced-active-poster.txt
 echo "Active UUID: $poster_uuid" >> output/replaced-active-poster.txt
+echo "Source provider: $source_provider" >> output/replaced-active-poster.txt
 echo "Replacement configuration: $target" >> output/replaced-active-poster.txt
 
 xcrun simctl shutdown "$SIMULATOR_UDID"
