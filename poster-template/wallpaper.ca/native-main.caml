@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<caml xmlns="http://www.apple.com/CoreAnimation/1.0">
+  <CALayer id="1761665223009" name="Root Layer" bounds="0 0 393 852" position="197 426" geometryFlipped="0" backgroundColor="0.898 0.9059 0.9216" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+    <style>
+      <wallpaperBackgroundAssetNames type="NSArray"/>
+      <wallpaperFloatingAssetNames type="NSArray"/>
+      <wallpaperParallaxGroups type="NSArray">
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="Transform Layer"/>
+          <mapMaxTo type="integer" value="50"/>
+          <mapMinTo type="integer" value="-50"/>
+          <title type="string" value="xg"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="Transform Layer"/>
+          <mapMaxTo type="integer" value="50"/>
+          <mapMinTo type="integer" value="-50"/>
+          <title type="string" value="xy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="gy1"/>
+          <mapMaxTo type="integer" value="50"/>
+          <mapMinTo type="integer" value="-50"/>
+          <title type="string" value="New Gyro Effect"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="gy1"/>
+          <mapMaxTo type="integer" value="50"/>
+          <mapMinTo type="integer" value="-50"/>
+          <title type="string" value="New Gyro Effect"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="g1"/>
+          <mapMaxTo type="integer" value="10"/>
+          <mapMinTo type="integer" value="-10"/>
+          <title type="string" value="xg"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="g1"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-5"/>
+          <title type="string" value="yg"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="g2"/>
+          <mapMaxTo type="integer" value="20"/>
+          <mapMinTo type="integer" value="-20"/>
+          <title type="string" value="xg"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="g2"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-10"/>
+          <title type="string" value="yg"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="g3"/>
+          <mapMaxTo type="integer" value="30"/>
+          <mapMinTo type="integer" value="-30"/>
+          <title type="string" value="gx"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="g3"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-20"/>
+          <title type="string" value="gy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="g4"/>
+          <mapMaxTo type="integer" value="40"/>
+          <mapMinTo type="integer" value="-40"/>
+          <title type="string" value="gx"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="g4"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-40"/>
+          <title type="string" value="gy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="g5"/>
+          <mapMaxTo type="integer" value="50"/>
+          <mapMinTo type="integer" value="-50"/>
+          <title type="string" value="gx"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="g5"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-80"/>
+          <title type="string" value="gy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="g6"/>
+          <mapMaxTo type="integer" value="60"/>
+          <mapMinTo type="integer" value="-60"/>
+          <title type="string" value="gx"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="g6"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-160"/>
+          <title type="string" value="gy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="gb"/>
+          <mapMaxTo type="integer" value="40"/>
+          <mapMinTo type="integer" value="-40"/>
+          <title type="string" value="gx"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="gb"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-60"/>
+          <title type="string" value="gy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="tg"/>
+          <mapMaxTo type="integer" value="30"/>
+          <mapMinTo type="integer" value="-30"/>
+          <title type="string" value="gx"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="tg"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-60"/>
+          <title type="string" value="gy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="transform.rotation.y"/>
+          <layerName type="string" value="tg"/>
+          <mapMaxTo type="integer" value="0.5"/>
+          <mapMinTo type="integer" value="-0.5"/>
+          <title type="string" value="gry"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="rag"/>
+          <mapMaxTo type="integer" value="35"/>
+          <mapMinTo type="integer" value="-35"/>
+          <title type="string" value="gx"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="rag"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-65"/>
+          <title type="string" value="gy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="transform.rotation.y"/>
+          <layerName type="string" value="rag"/>
+          <mapMaxTo type="integer" value="0.5"/>
+          <mapMinTo type="integer" value="-0.5"/>
+          <title type="string" value="gry"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="lag"/>
+          <mapMaxTo type="integer" value="25"/>
+          <mapMinTo type="integer" value="-25"/>
+          <title type="string" value="gx"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="lag"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-55"/>
+          <title type="string" value="gy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="transform.rotation.y"/>
+          <layerName type="string" value="lag"/>
+          <mapMaxTo type="integer" value="0.5"/>
+          <mapMinTo type="integer" value="-0.5"/>
+          <title type="string" value="gry"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="Shadow"/>
+          <mapMaxTo type="integer" value="30"/>
+          <mapMinTo type="integer" value="-30"/>
+          <title type="string" value="gx"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="Shadow"/>
+          <mapMaxTo type="integer" value="0"/>
+          <mapMinTo type="integer" value="-45"/>
+          <title type="string" value="gy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="x"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.x"/>
+          <layerName type="string" value="CloudCenter"/>
+          <mapMaxTo type="integer" value="10"/>
+          <mapMinTo type="integer" value="-10"/>
+          <title type="string" value="gx"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+        <NSDictionary>
+          <axis type="string" value="y"/>
+          <image type="string" value="null"/>
+          <keyPath type="string" value="position.y"/>
+          <layerName type="string" value="CloudCenter"/>
+          <mapMaxTo type="integer" value="5"/>
+          <mapMinTo type="integer" value="-5"/>
+          <title type="string" value="gy"/>
+          <view type="string" value="Floating"/>
+        </NSDictionary>
+      </wallpaperParallaxGroups>
+      <wallpaperPropertyGroups type="NSArray"/>
+    </style>
+    <sublayers>
+      <CALayer id="background" name="BACKGROUND" bounds="0 0 393 852" position="197 426" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+        <sublayers>
+          <CAGradientLayer id="i6o6jrizt1rmhasj1aq" name="Sky" bounds="0 0 392.5 521.7594167679222" position="196 591" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular" startPoint="0.5 1" endPoint="0.5 0">
+            <colors>
+              <CGColor value="0.9922 1 0.4784"/>
+              <CGColor value="0.651 0.302 1"/>
+            </colors>
+            <type value="axial"/>
+          </CAGradientLayer>
+        </sublayers>
+      </CALayer>
+      <CALayer id="floating" name="FLOATING" bounds="0 0 393 852" position="197 426" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+        <sublayers>
+          <CALayer id="iwfxu8abnsmhaqobmu" name="Center" bounds="0 0 0 0" position="197 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0.3765 0.6471 0.9804" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+            <sublayers>
+              <CATransformLayer id="ahqxiixmtqcmhaqpn77" name="g1" bounds="0 0 0 0" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <sublayers>
+                  <CALayer id="setfgm0wzwkmharnj9s" name="grass1" bounds="0 0 500 700" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0.0431 0.5765 0.149" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                </sublayers>
+              </CATransformLayer>
+              <CATransformLayer id="4ehxsnz60iumharshhv" name="g2" bounds="0 0 0 0" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <sublayers>
+                  <CALayer id="gfvwr5jsib6mharshhv" name="grass2" bounds="0 0 500 700" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0.0706 0.6314 0.1804" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                </sublayers>
+              </CATransformLayer>
+              <CATransformLayer id="pkfjut71z2mharvi8s" name="g3" bounds="0 0 0 0" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <sublayers>
+                  <CALayer id="mv7r1c5gewmharvi8s" name="grass3" bounds="0 0 600 700" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0.1176 0.6824 0.2314" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                  <CALayer id="8ku8w1hwhsmhaw4g1z" name="grass.png copy" bounds="0 0 38.94859772107655 42.177571299654886" position="-44 351" geometryFlipped="0" transform.rotation.z="-2.4802620430283604e-16" transform="rotate(-1.4210854715202004e-14deg)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                    <contents>
+                      <CGImage src="assets/grass.png"/>
+                    </contents>
+                  </CALayer>
+                </sublayers>
+              </CATransformLayer>
+              <CATransformLayer id="evkvest257bmhas4afb" name="g4" bounds="0 0 0 0" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <sublayers>
+                  <CALayer id="5svkhx35rowmhas4afb" name="grass4" bounds="0 0 600 700" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0.1569 0.7216 0.2706" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                  <CALayer id="zt51onb5zimmhavpio5" name="grass.png copy" bounds="0 0 65.91961927064413 71.38458390067163" position="-117 351" geometryFlipped="0" transform.rotation.z="-4.960524086056721e-16" transform="rotate(-2.842170943040401e-14deg)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                    <contents>
+                      <CGImage src="assets/grass.png"/>
+                    </contents>
+                  </CALayer>
+                </sublayers>
+              </CATransformLayer>
+              <CATransformLayer id="o259mxcmc7mhav4a0l" name="Shadow" bounds="0 0 0 0" position="0 0" transform.rotation.z="0" transform="rotate(0deg)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <sublayers>
+                  <CAGradientLayer id="ad17obxaxq8mhav658n" name="S" bounds="0 0 200 27.556500607533394" position="0 336" transform.rotation.z="0" transform="rotate(0deg)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular" startPoint="0.5 0.5" endPoint="1 1">
+                    <colors>
+                      <CGColor value="0 0 0" opacity="0.25"/>
+                      <CGColor value="0 0 0" opacity="0"/>
+                    </colors>
+                    <type value="radial"/>
+                  </CAGradientLayer>
+                </sublayers>
+              </CATransformLayer>
+              <CATransformLayer id="y387sssi5elmhasa58p" name="g5" bounds="0 0 0 0" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <sublayers>
+                  <CALayer id="zyafwvlucrmhasa58p" name="grass5" bounds="0 0 800 700" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0.1961 0.7647 0.3098" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                  <CALayer id="rd12gk9cbemhavmn8b" name="grass.png copy" bounds="0 0 119.58131797120376 119.58131797120376" position="110 354" geometryFlipped="0" transform.rotation.z="-0.15055787732524534" transform="rotate(-8.626330943184954deg)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                    <contents>
+                      <CGImage src="assets/grass.png"/>
+                    </contents>
+                  </CALayer>
+                </sublayers>
+              </CATransformLayer>
+              <CATransformLayer id="tjqlofot468mhasd770" name="g6" bounds="0 0 0 0" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <sublayers>
+                  <CALayer id="jxr7owcyv1emhasd770" name="grass6" bounds="0 0 800 700" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0.2471 0.7922 0.3569" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                  <CALayer id="n5ts2n31ip8mhavkgmz" name="grass.png copy" bounds="0 0 248.64732685297696 248.64732685297696" position="-127 305" geometryFlipped="0" transform.rotation.z="0" transform="rotate(0deg)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                    <contents>
+                      <CGImage src="assets/grass.png"/>
+                    </contents>
+                  </CALayer>
+                  <CALayer id="fcmpw1tapvhmhavjqt0" name="grass.png" bounds="0 0 343.3593455331956 343.3593455331956" position="132 148" geometryFlipped="0" transform.rotation.z="-0.15055787732524534" transform="rotate(-8.626330943184954deg)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                    <contents>
+                      <CGImage src="assets/grass.png"/>
+                    </contents>
+                  </CALayer>
+                </sublayers>
+              </CATransformLayer>
+            </sublayers>
+          </CALayer>
+          <CALayer id="fv89sugfjbpmhash8l6" name="CharCenter" bounds="0 0 0 0" position="196 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0.3765 0.6471 0.9804" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+            <sublayers>
+              <CATransformLayer id="h88wq2oxspmhau7lpk" name="lag" bounds="0 0 0 0" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <sublayers>
+                  <CALayer id="i1i5572dvxmhau7lpk" name="arm" bounds="0 0 40 80" position="23 490" anchorPoint="0.5 1" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="-1.3387671133739538" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(-76.70570534723974deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="1 0.9216 0.0588" cornerRadius="5" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                  <CALayer id="36gv73hu8vsmhauqheo" name="leg" bounds="0 0 40 80" position="-16 430" anchorPoint="0.5 1" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="-1.3073194010676672" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(-74.90388415674789deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0.3765 0.8824 0.2392" cornerRadius="5" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                </sublayers>
+              </CATransformLayer>
+              <CATransformLayer id="nzxjxqelcrnmhasn30w" name="tg" bounds="0 0 0 0" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <sublayers>
+                  <CALayer id="k7a7kw58zwamhatbojz" name="h" bounds="0 0 38.110381743260774 38.75245383996256" position="38 517" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="-0.3180410377301366" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(-18.222409173897802deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="1 0.9216 0.0588" cornerRadius="10" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                  <CALayer id="zwpz7k6ym3mhauga1z" name="b" bounds="0 0 40 80" position="10 466" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="-0.5248498514364738" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(-30.071681365378215deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0 0.3333 1" cornerRadius="5" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                </sublayers>
+              </CATransformLayer>
+              <CATransformLayer id="hr00z50i1d7mhatoh51" name="rag" bounds="0 0 0 0" position="0 0" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <sublayers>
+                  <CALayer id="7f2ymr1eo2hmhatoh51" name="arm" bounds="0 0 40 80" position="19 466" anchorPoint="0.5 1" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="-4.56874316610713" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(-261.7697010971758deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="1 0.9216 0.0784" cornerRadius="5" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                  <CALayer id="qx2gx9q3z1jmhauwfzl" name="leg" bounds="0 0 40 80" position="10 431" anchorPoint="0.5 1" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0.110294134653146" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(6.319388420672865deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0.451 1 0.302" cornerRadius="5" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular"/>
+                </sublayers>
+              </CATransformLayer>
+            </sublayers>
+          </CALayer>
+          <CATransformLayer id="i1p7olpc4mkmhawd9d2" name="CloudCenter" bounds="0 0 0 0" position="196 0" transform.rotation.z="0" transform="rotate(0deg)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+            <sublayers>
+              <CALayer id="1mfla0o5q9umhawh9kr" name="cloud.png" bounds="0 0 111.0787788578371 222.1575577156742" position="137 646" transform.rotation.z="1.570796326794897" transform="rotate(90.00000000000001deg)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+                <contents>
+                  <CGImage src="assets/cloud.png"/>
+                </contents>
+              </CALayer>
+            </sublayers>
+          </CATransformLayer>
+        </sublayers>
+      </CALayer>
+    </sublayers>
+    <modules/>
+    <states>
+      <LKState name="Locked">
+        <elements/>
+      </LKState>
+      <LKState name="Unlock">
+        <elements/>
+      </LKState>
+      <LKState name="Sleep">
+        <elements/>
+      </LKState>
+    </states>
+    <stateTransitions>
+      <LKStateTransition fromState="*" toState="Locked">
+        <elements/>
+      </LKStateTransition>
+      <LKStateTransition fromState="Locked" toState="*">
+        <elements/>
+      </LKStateTransition>
+      <LKStateTransition fromState="*" toState="Unlock">
+        <elements/>
+      </LKStateTransition>
+      <LKStateTransition fromState="Unlock" toState="*">
+        <elements/>
+      </LKStateTransition>
+      <LKStateTransition fromState="*" toState="Sleep">
+        <elements/>
+      </LKStateTransition>
+      <LKStateTransition fromState="Sleep" toState="*">
+        <elements/>
+      </LKStateTransition>
+    </stateTransitions>
+  </CALayer>
+</caml>
