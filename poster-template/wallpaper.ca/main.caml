@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <caml xmlns="http://www.apple.com/CoreAnimation/1.0">
-  <CALayer name="Root Layer" bounds="0 0 393 852" position="196.5 426" geometryFlipped="0" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+  <CALayer id="morrow-root" name="Root Layer" bounds="0 0 393 852" position="197 426" geometryFlipped="0" backgroundColor="0 0 0" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
     <style>
       <wallpaperBackgroundAssetNames type="NSArray"/>
       <wallpaperFloatingAssetNames type="NSArray"/>
@@ -8,10 +8,23 @@
       <wallpaperPropertyGroups type="NSArray"/>
     </style>
     <sublayers>
-      <CALayer name="BACKGROUND" bounds="0 0 393 852" position="196.5 426" geometryFlipped="0" masksToBounds="1" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
-        <contents>
-          <CGImage src="assets/wallpaper.png"/>
-        </contents>
+      <CALayer id="background" name="BACKGROUND" bounds="0 0 393 852" position="197 426" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" backgroundColor="0 0 0" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+        <sublayers>
+          <CALayer id="morrow-wallpaper-background-image" name="Morrow Background" bounds="0 0 393 852" position="196.5 426" geometryFlipped="0" masksToBounds="0" opacity="1" contentsGravity="resize" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+            <contents>
+              <CGImage src="assets/wallpaper.png"/>
+            </contents>
+          </CALayer>
+        </sublayers>
+      </CALayer>
+      <CALayer id="floating" name="FLOATING" bounds="0 0 393 852" position="197 426" geometryFlipped="0" masksToBounds="0" opacity="1" transform.rotation.z="0" transform.rotation.x="0" transform.rotation.y="0" transform="rotate(0deg) rotate(0deg, 0, 1, 0) rotate(0deg, 1, 0, 0)" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+        <sublayers>
+          <CALayer id="morrow-wallpaper-image" name="Morrow Wallpaper" bounds="0 0 393 852" position="196.5 426" geometryFlipped="0" masksToBounds="0" opacity="1" contentsGravity="resize" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+            <contents>
+              <CGImage src="assets/wallpaper.png"/>
+            </contents>
+          </CALayer>
+        </sublayers>
       </CALayer>
     </sublayers>
     <modules/>
