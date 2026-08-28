@@ -47,17 +47,20 @@ if [[ -z "$poster_uuid" || ! -d "$source_config" ]]; then
   exit 1
 fi
 
-collections_configs="$structure_dir/Extensions/com.apple.WallpaperKit.CollectionsPoster/configurations"
+collections_root="$structure_dir/Extensions/com.apple.WallpaperKit.CollectionsPoster"
+collections_configs="$collections_root/configurations"
+collections_descriptors="$collections_root/descriptors"
+native_descriptor="$(find "$collections_descriptors" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
 collection_template="$(find "$collections_configs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
 
 # A fresh simulator may not yet have a CollectionsPoster configuration. A
 # native descriptor has the same versioned provider payload and is a valid
 # base once Apple's photo configuration styling is copied over it.
 if [[ -z "$collection_template" ]]; then
-  collection_template="$(find "$structure_dir/Extensions/com.apple.WallpaperKit.CollectionsPoster/descriptors" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
+  collection_template="$native_descriptor"
 fi
 
-if [[ -z "$collection_template" ]]; then
+if [[ -z "$collection_template" || -z "$native_descriptor" ]]; then
   echo "A native collection template was not found." >&2
   exit 1
 fi
@@ -65,7 +68,12 @@ fi
 target="$collections_configs/$poster_uuid"
 mkdir -p "$collections_configs"
 if [[ "$target" != "$source_config" ]]; then
-  ditto "$collection_template" "$target"
+  # A Collections configuration resolves its identifier against the provider's
+  # descriptor catalogue.  Build the active configuration from the same
+  # native descriptor structure that we also register below, so PosterBoard
+  # cannot silently fall back to Apple's default collection.
+  rm -rf "$target"
+  ditto "$native_descriptor" "$target"
 fi
 
 source_version=""
@@ -77,12 +85,14 @@ done
 
 target_version="$target/versions/$(basename "$source_version")"
 if [[ ! -d "$target_version" ]]; then
-  target_version=""
+  native_target_version=""
   for candidate in "$target/versions"/*; do
     [[ -d "$candidate" ]] || continue
     [[ "$(basename "$candidate")" =~ ^[0-9]+$ ]] || continue
-    target_version="$candidate"
+    native_target_version="$candidate"
   done
+  target_version="$target/versions/$(basename "$source_version")"
+  ditto "$native_target_version" "$target_version"
 fi
 
 if [[ -z "$source_version" || -z "$target_version" ]]; then
@@ -110,21 +120,45 @@ fi
 
 poster_id="99001"
 wallpaper_name="${poster_id}.Morrow-393w-852h@3x~iphone.wallpaper"
-contents="$target_version/contents"
-rm -rf "$contents"
-mkdir -p "$contents/$wallpaper_name/wallpaper.ca/assets"
 
-cp poster-template/com.apple.posterkit.provider.contents.userInfo "$contents/com.apple.posterkit.provider.contents.userInfo"
-cp poster-template/Wallpaper.plist "$contents/$wallpaper_name/Wallpaper.plist"
-cp poster-template/wallpaper.ca/index.xml "$contents/$wallpaper_name/wallpaper.ca/index.xml"
-cp poster-template/wallpaper.ca/assetManifest.caml "$contents/$wallpaper_name/wallpaper.ca/assetManifest.caml"
-cp poster-template/wallpaper.ca/main.caml "$contents/$wallpaper_name/wallpaper.ca/main.caml"
-cp "$WALLPAPER" "$contents/$wallpaper_name/wallpaper.ca/assets/wallpaper.jpg"
+install_static_contents() {
+  local version_dir="$1"
+  local contents="$version_dir/contents"
+  rm -rf "$contents"
+  mkdir -p "$contents/$wallpaper_name/wallpaper.ca/assets"
+
+  cp poster-template/com.apple.posterkit.provider.contents.userInfo "$contents/com.apple.posterkit.provider.contents.userInfo"
+  cp poster-template/Wallpaper.plist "$contents/$wallpaper_name/Wallpaper.plist"
+  cp poster-template/wallpaper.ca/index.xml "$contents/$wallpaper_name/wallpaper.ca/index.xml"
+  cp poster-template/wallpaper.ca/assetManifest.caml "$contents/$wallpaper_name/wallpaper.ca/assetManifest.caml"
+  cp poster-template/wallpaper.ca/main.caml "$contents/$wallpaper_name/wallpaper.ca/main.caml"
+  cp "$WALLPAPER" "$contents/$wallpaper_name/wallpaper.ca/assets/wallpaper.jpg"
+
+  plutil -replace wallpaperRepresentingFileName -string "$wallpaper_name" "$contents/com.apple.posterkit.provider.contents.userInfo"
+  plutil -replace wallpaperRepresentingIdentifier -string "$poster_id" "$contents/com.apple.posterkit.provider.contents.userInfo"
+  plutil -replace identifier -integer "$poster_id" "$contents/$wallpaper_name/Wallpaper.plist"
+}
 
 printf '%s' "$poster_id" > "$target/com.apple.posterkit.provider.descriptor.identifier"
-plutil -replace wallpaperRepresentingFileName -string "$wallpaper_name" "$contents/com.apple.posterkit.provider.contents.userInfo"
-plutil -replace wallpaperRepresentingIdentifier -string "$poster_id" "$contents/com.apple.posterkit.provider.contents.userInfo"
-plutil -replace identifier -integer "$poster_id" "$contents/$wallpaper_name/Wallpaper.plist"
+install_static_contents "$target_version"
+
+# Register an actual descriptor with the same identifier.  Without this,
+# CollectionsPoster accepts the database row but renders its stock fallback.
+descriptor_uuid="$(uuidgen)"
+custom_descriptor="$collections_descriptors/$descriptor_uuid"
+ditto "$native_descriptor" "$custom_descriptor"
+printf '%s' "$poster_id" > "$custom_descriptor/com.apple.posterkit.provider.descriptor.identifier"
+descriptor_version=""
+for candidate in "$custom_descriptor/versions"/*; do
+  [[ -d "$candidate" ]] || continue
+  [[ "$(basename "$candidate")" =~ ^[0-9]+$ ]] || continue
+  descriptor_version="$candidate"
+done
+if [[ -z "$descriptor_version" ]]; then
+  echo "The registered descriptor has no numeric version directory." >&2
+  exit 1
+fi
+install_static_contents "$descriptor_version"
 
 # The cloned native configuration may carry a rendered snapshot from the
 # source poster. It must not mask the newly supplied CAML background.
@@ -151,6 +185,7 @@ echo "Store structure: $structure_dir" >> output/replaced-active-poster.txt
 echo "Active UUID: $poster_uuid" >> output/replaced-active-poster.txt
 echo "Source provider: $source_provider" >> output/replaced-active-poster.txt
 echo "Replacement configuration: $target" >> output/replaced-active-poster.txt
+echo "Registered descriptor: $custom_descriptor" >> output/replaced-active-poster.txt
 
 xcrun simctl shutdown "$SIMULATOR_UDID"
 xcrun simctl boot "$SIMULATOR_UDID"
