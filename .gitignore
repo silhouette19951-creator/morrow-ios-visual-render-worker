@@ -2,6 +2,7 @@
 encrypted-results/
 output/
 decrypted/
+vendor/
 *.jpg
 *.png
 *.tar.gz
