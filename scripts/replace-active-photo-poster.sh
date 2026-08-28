@@ -122,22 +122,36 @@ if [[ "$source_version" != "$target_version" ]]; then
   done
 fi
 
-# Keep Apple's complete native CA package intact.  Replacing the package with
-# a minimal hand-written CAML document loads the clock configuration but the
-# system discards the bitmap layer.  Instead, append our full-screen image as
-# the topmost layer of the native package, whose schema and state transitions
-# are already known to render on this simulator runtime.
-native_main_caml="$(find "$target_version/contents" -type f -path '*/wallpaper.ca/main.caml' | head -1)"
-if [[ -z "$native_main_caml" ]]; then
-  echo "The native collection template has no wallpaper.ca/main.caml." >&2
-  exit 1
-fi
-
-native_ca_dir="$(dirname "$native_main_caml")"
+# The built-in collection descriptor on this runtime only stores a system
+# wallpaper identifier; its real CA document lives in the read-only system
+# image.  Build the configuration from a complete, known-good PosterBoard CA
+# document and add our artwork as its topmost full-screen layer.
+poster_id="$(tr -d '\r\n' < "$target/com.apple.posterkit.provider.descriptor.identifier")"
+wallpaper_name="${poster_id}.Morrow-393w-852h@3x~iphone.wallpaper"
+contents="$target_version/contents"
+native_ca_dir="$contents/$wallpaper_name/wallpaper.ca"
+rm -rf "$contents"
 mkdir -p "$native_ca_dir/assets"
+
+cp poster-template/com.apple.posterkit.provider.contents.userInfo "$contents/com.apple.posterkit.provider.contents.userInfo"
+cp poster-template/Wallpaper.plist "$contents/$wallpaper_name/Wallpaper.plist"
+cp poster-template/wallpaper.ca/index.xml "$native_ca_dir/index.xml"
+cp poster-template/wallpaper.ca/assetManifest.caml "$native_ca_dir/assetManifest.caml"
+cp poster-template/wallpaper.ca/native-main.caml "$native_ca_dir/main.caml"
+
 sips -s format png "$WALLPAPER" \
   --out "$native_ca_dir/assets/morrow.png" >/dev/null
-python3 scripts/overlay-native-caml.py "$native_main_caml"
+# The known-good document has two small legacy image references underneath
+# the full-screen overlay.  Supplying valid PNGs keeps the CA bundle complete;
+# the final Morrow layer covers them entirely.
+sips -z 1 1 "$native_ca_dir/assets/morrow.png" \
+  --out "$native_ca_dir/assets/grass.png" >/dev/null
+cp "$native_ca_dir/assets/grass.png" "$native_ca_dir/assets/cloud.png"
+python3 scripts/overlay-native-caml.py "$native_ca_dir/main.caml"
+
+plutil -replace wallpaperRepresentingFileName -string "$wallpaper_name" "$contents/com.apple.posterkit.provider.contents.userInfo"
+plutil -replace wallpaperRepresentingIdentifier -string "$poster_id" "$contents/com.apple.posterkit.provider.contents.userInfo"
+plutil -replace identifier -integer "$poster_id" "$contents/$wallpaper_name/Wallpaper.plist"
 
 # The cloned native configuration may carry a rendered snapshot from the
 # source poster. It must not mask the newly supplied CAML background.
@@ -164,7 +178,7 @@ echo "Store structure: $structure_dir" >> output/replaced-active-poster.txt
 echo "Active UUID: $poster_uuid" >> output/replaced-active-poster.txt
 echo "Source provider: $source_provider" >> output/replaced-active-poster.txt
 echo "Replacement configuration: $target" >> output/replaced-active-poster.txt
-echo "Native CAML overlay: $native_main_caml" >> output/replaced-active-poster.txt
+echo "Native CAML overlay: $native_ca_dir/main.caml" >> output/replaced-active-poster.txt
 
 xcrun simctl shutdown "$SIMULATOR_UDID"
 xcrun simctl boot "$SIMULATOR_UDID"
