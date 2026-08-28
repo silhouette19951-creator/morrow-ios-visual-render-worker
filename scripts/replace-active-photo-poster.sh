@@ -27,6 +27,13 @@ collections_configs="$structure_dir/Extensions/com.apple.WallpaperKit.Collection
 photo_config="$(find "$photos_configs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
 collection_template="$(find "$collections_configs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
 
+# A fresh simulator may not yet have a CollectionsPoster configuration. A
+# native descriptor has the same versioned provider payload and is a valid
+# base once Apple's photo configuration styling is copied over it.
+if [[ -z "$collection_template" ]]; then
+  collection_template="$(find "$structure_dir/Extensions/com.apple.WallpaperKit.CollectionsPoster/descriptors" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
+fi
+
 if [[ -z "$photo_config" || -z "$collection_template" ]]; then
   echo "A source photo configuration or native collection template was not found." >&2
   exit 1
@@ -34,6 +41,7 @@ fi
 
 poster_uuid="$(basename "$photo_config")"
 target="$collections_configs/$poster_uuid"
+mkdir -p "$collections_configs"
 ditto "$collection_template" "$target"
 
 source_version=""
