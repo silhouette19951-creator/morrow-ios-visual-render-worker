@@ -22,9 +22,23 @@ if [[ -z "$structure_dir" ]]; then
   exit 1
 fi
 
-photos_configs="$structure_dir/Extensions/com.apple.PhotosUIPrivate.PhotosPosterProvider/configurations"
+database="$structure_dir/PBFPosterExtensionDataStoreSQLiteDatabase.sqlite3"
+if [[ ! -f "$database" ]]; then
+  echo "PosterBoard SQLite database was not found." >&2
+  exit 1
+fi
+
+active_row="$(sqlite3 "$database" "SELECT p.UUID || '|' || p.providerId FROM poster p JOIN posterRoleMembership m ON m.posterUUID=p.UUID WHERE m.roleId='PRPosterRoleLockScreen' ORDER BY m.roleSortKey DESC LIMIT 1;")"
+poster_uuid="${active_row%%|*}"
+source_provider="${active_row#*|}"
+source_config="$structure_dir/Extensions/$source_provider/configurations/$poster_uuid"
+
+if [[ -z "$poster_uuid" || "$source_provider" == "$active_row" || ! -d "$source_config" ]]; then
+  echo "The active lock-screen configuration was not found." >&2
+  exit 1
+fi
+
 collections_configs="$structure_dir/Extensions/com.apple.WallpaperKit.CollectionsPoster/configurations"
-photo_config="$(find "$photos_configs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
 collection_template="$(find "$collections_configs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
 
 # A fresh simulator may not yet have a CollectionsPoster configuration. A
@@ -34,18 +48,19 @@ if [[ -z "$collection_template" ]]; then
   collection_template="$(find "$structure_dir/Extensions/com.apple.WallpaperKit.CollectionsPoster/descriptors" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
 fi
 
-if [[ -z "$photo_config" || -z "$collection_template" ]]; then
-  echo "A source photo configuration or native collection template was not found." >&2
+if [[ -z "$collection_template" ]]; then
+  echo "A native collection template was not found." >&2
   exit 1
 fi
 
-poster_uuid="$(basename "$photo_config")"
 target="$collections_configs/$poster_uuid"
 mkdir -p "$collections_configs"
-ditto "$collection_template" "$target"
+if [[ "$target" != "$source_config" ]]; then
+  ditto "$collection_template" "$target"
+fi
 
 source_version=""
-for candidate in "$photo_config/versions"/*; do
+for candidate in "$source_config/versions"/*; do
   [[ -d "$candidate" ]] || continue
   [[ "$(basename "$candidate")" =~ ^[0-9]+$ ]] || continue
   source_version="$candidate"
@@ -64,15 +79,17 @@ if [[ -z "$source_version" || -z "$target_version" ]]; then
 fi
 
 # Preserve Apple's own clock stretch, color, widgets, and quick-action choices.
-for settings_file in \
-  com.apple.posterkit.provider.instance.titleStyleConfiguration.plist \
-  com.apple.posterkit.provider.instance.complicationLayout.plist \
-  com.apple.posterkit.provider.instance.quickActions.plist \
-  com.apple.posterkit.provider.instance.renderingConfiguration.plist; do
-  if [[ -f "$source_version/$settings_file" ]]; then
-    cp "$source_version/$settings_file" "$target_version/$settings_file"
-  fi
-done
+if [[ "$source_version" != "$target_version" ]]; then
+  for settings_file in \
+    com.apple.posterkit.provider.instance.titleStyleConfiguration.plist \
+    com.apple.posterkit.provider.instance.complicationLayout.plist \
+    com.apple.posterkit.provider.instance.quickActions.plist \
+    com.apple.posterkit.provider.instance.renderingConfiguration.plist; do
+    if [[ -f "$source_version/$settings_file" ]]; then
+      cp "$source_version/$settings_file" "$target_version/$settings_file"
+    fi
+  done
+fi
 
 poster_id="99001"
 wallpaper_name="${poster_id}.Morrow-393w-852h@3x~iphone.wallpaper"
@@ -96,12 +113,6 @@ plutil -replace identifier -integer "$poster_id" "$contents/$wallpaper_name/Wall
 # source poster. It must not mask the newly supplied CAML background.
 find "$target" -type f -name 'RuntimeSnapshotMetadata-*' -delete
 
-database="$structure_dir/PBFPosterExtensionDataStoreSQLiteDatabase.sqlite3"
-if [[ ! -f "$database" ]]; then
-  echo "PosterBoard SQLite database was not found." >&2
-  exit 1
-fi
-
 xcrun simctl spawn "$SIMULATOR_UDID" killall PosterBoard >/dev/null 2>&1 || true
 xcrun simctl spawn "$SIMULATOR_UDID" killall posterboardd >/dev/null 2>&1 || true
 sleep 2
@@ -109,7 +120,9 @@ sleep 2
 sqlite3 "$database" "UPDATE poster SET providerId='com.apple.WallpaperKit.CollectionsPoster' WHERE UUID='$poster_uuid';"
 sqlite3 "$database" "SELECT UUID, providerId FROM poster WHERE UUID='$poster_uuid';" > output/replaced-active-poster-db.txt
 
-rm -rf "$photo_config"
+if [[ "$source_config" != "$target" ]]; then
+  rm -rf "$source_config"
+fi
 
 gallery_cache="$structure_dir/GalleryCache"
 if [[ -d "$gallery_cache" ]]; then
