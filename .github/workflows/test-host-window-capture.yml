@@ -1,0 +1,98 @@
+name: Test macOS host capture of visual iOS Simulator
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner_label:
+        description: Standard public macOS runner
+        required: true
+        default: macos-26
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    name: Capture the visible Simulator window
+    runs-on: ${{ inputs.runner_label }}
+    timeout-minutes: 18
+
+    steps:
+      - name: Check out visual worker
+        uses: actions/checkout@v5
+
+      - name: Decrypt one private wallpaper in runner memory
+        env:
+          MORROW_ASSET_KEY: ${{ secrets.MORROW_ASSET_KEY }}
+        run: |
+          mkdir -p decrypted
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 \
+            -in assets-encrypted/04-mirror-salt-moon.jpg.enc \
+            -out decrypted/wallpaper.jpg \
+            -pass env:MORROW_ASSET_KEY
+
+      - name: Boot visual iPhone simulator
+        env:
+          DEVICE_HINT: Pro Max
+          WALLPAPER: decrypted/wallpaper.jpg
+        run: bash scripts/boot-simulator.sh
+
+      - name: Install visual controller
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Create native photo poster and stretched clock
+        env:
+          PHOTO_POINT: 16%,52%
+          MAESTRO_CLI_NO_ANALYTICS: 1
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: 180000
+        run: |
+          maestro test \
+            -e PHOTO_POINT="$PHOTO_POINT" \
+            --debug-output output/maestro-set-wallpaper \
+            flows/set-wallpaper.yaml
+
+      - name: Capture the visible macOS Simulator window
+        run: |
+          osascript -e 'tell application "Simulator" to activate'
+          sleep 5
+          bounds="$(osascript <<'APPLESCRIPT'
+          tell application "System Events"
+            tell process "Simulator"
+              set frontmost to true
+              set {x, y} to position of window 1
+              set {w, h} to size of window 1
+              return (x as text) & "," & (y as text) & "," & (w as text) & "," & (h as text)
+            end tell
+          end tell
+          APPLESCRIPT
+          )"
+          echo "$bounds" > output/simulator-window-bounds.txt
+          screencapture -x output/host-desktop.png
+          screencapture -x -R"$bounds" output/host-simulator-window.png
+
+      - name: Seal private host-capture proof
+        if: always()
+        env:
+          MORROW_ASSET_KEY: ${{ secrets.MORROW_ASSET_KEY }}
+        run: |
+          mkdir -p proof
+          for file in output/host-desktop.png output/host-simulator-window.png output/simulator-window-bounds.txt output/selection.txt output/xcode-version.txt; do
+            if [[ -f "$file" ]]; then cp "$file" proof/; fi
+          done
+          find output/maestro-set-wallpaper -type f -name '*lockscreen-final.png' -exec cp {} proof/internal-lockscreen-final.png \; 2>/dev/null || true
+          tar -czf host-window-capture.tar.gz proof
+          openssl enc -aes-256-cbc -salt -pbkdf2 -iter 200000 \
+            -in host-window-capture.tar.gz \
+            -out sealed-host-window-capture.tar.gz.enc \
+            -pass env:MORROW_ASSET_KEY
+
+      - name: Upload encrypted host-capture proof
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: sealed-host-window-capture
+          path: sealed-host-window-capture.tar.gz.enc
+          if-no-files-found: error
+          retention-days: 1
