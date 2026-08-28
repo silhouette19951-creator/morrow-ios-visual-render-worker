@@ -136,7 +136,8 @@ install_static_contents() {
   cp poster-template/wallpaper.ca/index.xml "$contents/$wallpaper_name/wallpaper.ca/index.xml"
   cp poster-template/wallpaper.ca/assetManifest.caml "$contents/$wallpaper_name/wallpaper.ca/assetManifest.caml"
   cp poster-template/wallpaper.ca/main.caml "$contents/$wallpaper_name/wallpaper.ca/main.caml"
-  cp "$WALLPAPER" "$contents/$wallpaper_name/wallpaper.ca/assets/wallpaper.jpg"
+  sips -s format png "$WALLPAPER" \
+    --out "$contents/$wallpaper_name/wallpaper.ca/assets/wallpaper.png" >/dev/null
 
   plutil -replace wallpaperRepresentingFileName -string "$wallpaper_name" "$contents/com.apple.posterkit.provider.contents.userInfo"
   plutil -replace wallpaperRepresentingIdentifier -string "$poster_id" "$contents/com.apple.posterkit.provider.contents.userInfo"
