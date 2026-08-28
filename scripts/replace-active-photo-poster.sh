@@ -83,22 +83,26 @@ for candidate in "$source_config/versions"/*; do
   source_version="$candidate"
 done
 
-target_version="$target/versions/$(basename "$source_version")"
-if [[ ! -d "$target_version" ]]; then
-  native_target_version=""
-  for candidate in "$target/versions"/*; do
-    [[ -d "$candidate" ]] || continue
-    [[ "$(basename "$candidate")" =~ ^[0-9]+$ ]] || continue
-    native_target_version="$candidate"
-  done
-  target_version="$target/versions/$(basename "$source_version")"
-  ditto "$native_target_version" "$target_version"
-fi
-
-if [[ -z "$source_version" || -z "$target_version" ]]; then
+native_descriptor_version=""
+for candidate in "$native_descriptor/versions"/*; do
+  [[ -d "$candidate" ]] || continue
+  [[ "$(basename "$candidate")" =~ ^[0-9]+$ ]] || continue
+  native_descriptor_version="$candidate"
+done
+if [[ -z "$source_version" || -z "$native_descriptor_version" ]]; then
   echo "Poster configuration versions were not found." >&2
   exit 1
 fi
+
+# Stock descriptors can contain versions 0 and 1. CollectionsPoster renders
+# the highest available version, while a fresh Photos configuration normally
+# uses version 0. Keeping the untouched stock version 1 caused the previous
+# run to show Apple's bubbles instead of the newly written asset. Collapse the
+# active configuration to one version so there is no stale payload to select.
+target_version="$target/versions/$(basename "$source_version")"
+rm -rf "$target/versions"
+mkdir -p "$target/versions"
+ditto "$native_descriptor_version" "$target_version"
 
 source_title_style="$source_version/com.apple.posterkit.provider.instance.titleStyleConfiguration.plist"
 if [[ -f "$source_title_style" ]]; then
@@ -148,17 +152,17 @@ descriptor_uuid="$(uuidgen)"
 custom_descriptor="$collections_descriptors/$descriptor_uuid"
 ditto "$native_descriptor" "$custom_descriptor"
 printf '%s' "$poster_id" > "$custom_descriptor/com.apple.posterkit.provider.descriptor.identifier"
-descriptor_version=""
+descriptor_version_found=""
 for candidate in "$custom_descriptor/versions"/*; do
   [[ -d "$candidate" ]] || continue
   [[ "$(basename "$candidate")" =~ ^[0-9]+$ ]] || continue
-  descriptor_version="$candidate"
+  descriptor_version_found="$candidate"
+  install_static_contents "$candidate"
 done
-if [[ -z "$descriptor_version" ]]; then
+if [[ -z "$descriptor_version_found" ]]; then
   echo "The registered descriptor has no numeric version directory." >&2
   exit 1
 fi
-install_static_contents "$descriptor_version"
 
 # The cloned native configuration may carry a rendered snapshot from the
 # source poster. It must not mask the newly supplied CAML background.
