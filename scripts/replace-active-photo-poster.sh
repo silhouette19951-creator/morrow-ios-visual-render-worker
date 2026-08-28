@@ -66,12 +66,15 @@ for candidate in "$source_config/versions"/*; do
   source_version="$candidate"
 done
 
-target_version=""
-for candidate in "$target/versions"/*; do
-  [[ -d "$candidate" ]] || continue
-  [[ "$(basename "$candidate")" =~ ^[0-9]+$ ]] || continue
-  target_version="$candidate"
-done
+target_version="$target/versions/$(basename "$source_version")"
+if [[ ! -d "$target_version" ]]; then
+  target_version=""
+  for candidate in "$target/versions"/*; do
+    [[ -d "$candidate" ]] || continue
+    [[ "$(basename "$candidate")" =~ ^[0-9]+$ ]] || continue
+    target_version="$candidate"
+  done
+fi
 
 if [[ -z "$source_version" || -z "$target_version" ]]; then
   echo "Poster configuration versions were not found." >&2
