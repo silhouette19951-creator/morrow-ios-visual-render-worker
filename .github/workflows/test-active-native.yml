@@ -37,10 +37,21 @@ jobs:
           WALLPAPER: decrypted/wallpaper.jpg
         run: bash scripts/boot-simulator.sh
 
+      - name: Install visual controller
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
       - name: Replace current native poster and force a fresh render
         env:
           WALLPAPER: output/import-wallpaper.jpg
         run: bash scripts/replace-active-photo-poster.sh
+
+      - name: Wake and capture the real lock screen
+        env:
+          MAESTRO_CLI_NO_ANALYTICS: 1
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: 180000
+        run: maestro test --debug-output output/maestro-lock flows/lock-and-capture.yaml
 
       - name: Seal private native-render proof
         if: always()
@@ -48,7 +59,11 @@ jobs:
           MORROW_ASSET_KEY: ${{ secrets.MORROW_ASSET_KEY }}
         run: |
           mkdir -p proof
-          for file in output/after-active-poster-replacement.png output/replaced-active-poster.txt output/replaced-active-poster-db.txt output/selection.txt output/xcode-version.txt; do
+          find output -type f -name '*.png' -print0 | while IFS= read -r -d '' file; do
+            safe_name="$(echo "$file" | tr '/ ' '__')"
+            cp "$file" "proof/$safe_name"
+          done
+          for file in output/replaced-active-poster.txt output/replaced-active-poster-db.txt output/selection.txt output/xcode-version.txt; do
             if [[ -f "$file" ]]; then cp "$file" proof/; fi
           done
           tar -czf test-active-native.tar.gz proof

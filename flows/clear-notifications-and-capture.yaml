@@ -1,5 +1,9 @@
 appId: com.apple.springboard
 ---
+- pressKey: lock
+- waitForAnimationToEnd
+- pressKey: lock
+- waitForAnimationToEnd
 - swipe:
     start: 82%,82%
     end: 18%,82%
