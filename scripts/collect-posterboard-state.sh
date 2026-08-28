@@ -22,11 +22,10 @@ fi
 
 echo "PosterBoard data: ${poster_data:-not-found}" >> "$out_dir/summary.txt"
 
-if [[ -n "$poster_data" && -d "$poster_data" ]]; then
-  poster_store="$poster_data/Library/Application Support/PRBPosterExtensionDataStore"
-  if [[ -d "$poster_store" ]]; then
-    ditto "$poster_store" "$out_dir/PRBPosterExtensionDataStore"
-  fi
+poster_store="$device_root/Library/Application Support/PRBPosterExtensionDataStore"
+echo "PosterBoard global store: $poster_store" >> "$out_dir/summary.txt"
+if [[ -d "$poster_store" ]]; then
+  ditto "$poster_store" "$out_dir/PRBPosterExtensionDataStore"
 fi
 
 springboard_dir="$device_root/Library/SpringBoard"

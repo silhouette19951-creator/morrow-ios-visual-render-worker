@@ -8,13 +8,10 @@ if [[ ! -f "$WALLPAPER" ]]; then
   exit 1
 fi
 
-poster_data="$(xcrun simctl get_app_container "$SIMULATOR_UDID" com.apple.PosterBoard data 2>/dev/null || true)"
-if [[ -z "$poster_data" ]]; then
-  echo "PosterBoard data container was not found." >&2
-  exit 1
-fi
-
-store_root="$poster_data/Library/Application Support/PRBPosterExtensionDataStore"
+device_root="$HOME/Library/Developer/CoreSimulator/Devices/$SIMULATOR_UDID/data"
+# On current iOS Simulator runtimes PosterBoard's data store is a global
+# mobile-library service, not inside the PosterBoard application container.
+store_root="$device_root/Library/Application Support/PRBPosterExtensionDataStore"
 structure_dir=""
 for candidate in "$store_root"/*; do
   [[ -d "$candidate" ]] || continue
@@ -81,7 +78,7 @@ if [[ -d "$gallery_cache" ]]; then
   find "$gallery_cache" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
 fi
 
-echo "PosterBoard data: $poster_data" > output/injected-poster.txt
+echo "Device root: $device_root" > output/injected-poster.txt
 echo "Store structure: $structure_dir" >> output/injected-poster.txt
 echo "Descriptor UUID: $poster_uuid" >> output/injected-poster.txt
 
