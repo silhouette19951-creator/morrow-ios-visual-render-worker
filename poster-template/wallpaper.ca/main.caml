@@ -10,7 +10,7 @@
     <sublayers>
       <CALayer name="BACKGROUND" bounds="0 0 393 852" position="196.5 426" geometryFlipped="0" masksToBounds="1" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
         <contents>
-          <CGImage src="assets/wallpaper.jpg"/>
+          <CGImage src="assets/wallpaper.png"/>
         </contents>
       </CALayer>
     </sublayers>
