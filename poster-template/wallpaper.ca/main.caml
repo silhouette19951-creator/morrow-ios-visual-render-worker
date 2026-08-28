@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<caml xmlns="http://www.apple.com/CoreAnimation/1.0">
+  <CALayer name="Root Layer" bounds="0 0 393 852" position="196.5 426" geometryFlipped="0" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+    <style>
+      <wallpaperBackgroundAssetNames type="NSArray"/>
+      <wallpaperFloatingAssetNames type="NSArray"/>
+      <wallpaperParallaxGroups type="NSArray"/>
+      <wallpaperPropertyGroups type="NSArray"/>
+    </style>
+    <sublayers>
+      <CALayer name="BACKGROUND" bounds="0 0 393 852" position="196.5 426" geometryFlipped="0" masksToBounds="1" allowsEdgeAntialiasing="1" allowsGroupOpacity="1" contentsFormat="RGBA8" cornerCurve="circular">
+        <contents>
+          <CGImage src="assets/wallpaper.jpg"/>
+        </contents>
+      </CALayer>
+    </sublayers>
+    <modules/>
+    <states>
+      <LKState name="Locked"><elements/></LKState>
+      <LKState name="Unlock"><elements/></LKState>
+      <LKState name="Sleep"><elements/></LKState>
+    </states>
+    <stateTransitions>
+      <LKStateTransition fromState="*" toState="Locked"><elements/></LKStateTransition>
+      <LKStateTransition fromState="Locked" toState="*"><elements/></LKStateTransition>
+      <LKStateTransition fromState="*" toState="Unlock"><elements/></LKStateTransition>
+      <LKStateTransition fromState="Unlock" toState="*"><elements/></LKStateTransition>
+      <LKStateTransition fromState="*" toState="Sleep"><elements/></LKStateTransition>
+      <LKStateTransition fromState="Sleep" toState="*"><elements/></LKStateTransition>
+    </stateTransitions>
+  </CALayer>
+</caml>

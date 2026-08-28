@@ -1,0 +1,68 @@
+name: Test encrypted Morrow static PosterBoard descriptor
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner_label:
+        description: Standard public macOS runner to test
+        required: true
+        default: macos-26
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test real static poster
+    runs-on: ${{ inputs.runner_label }}
+    timeout-minutes: 18
+
+    steps:
+      - name: Check out visual worker
+        uses: actions/checkout@v5
+
+      - name: Decrypt one private wallpaper in runner memory
+        env:
+          MORROW_ASSET_KEY: ${{ secrets.MORROW_ASSET_KEY }}
+        run: |
+          mkdir -p decrypted
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 \
+            -in assets-encrypted/04-mirror-salt-moon.jpg.enc \
+            -out decrypted/wallpaper.jpg \
+            -pass env:MORROW_ASSET_KEY
+
+      - name: Boot visual iPhone simulator
+        env:
+          DEVICE_HINT: Pro Max
+          WALLPAPER: decrypted/wallpaper.jpg
+        run: bash scripts/boot-simulator.sh
+
+      - name: Inject static system poster and open gallery
+        continue-on-error: true
+        env:
+          WALLPAPER: output/import-wallpaper.jpg
+        run: bash scripts/inject-static-poster.sh
+
+      - name: Seal private gallery proof
+        if: always()
+        env:
+          MORROW_ASSET_KEY: ${{ secrets.MORROW_ASSET_KEY }}
+        run: |
+          mkdir -p proof
+          for file in output/posterboard-gallery.png output/injected-poster.txt output/selection.txt output/xcode-version.txt; do
+            if [[ -f "$file" ]]; then cp "$file" proof/; fi
+          done
+          tar -czf test-static-poster.tar.gz proof
+          openssl enc -aes-256-cbc -salt -pbkdf2 -iter 200000 \
+            -in test-static-poster.tar.gz \
+            -out sealed-test-static-poster.tar.gz.enc \
+            -pass env:MORROW_ASSET_KEY
+
+      - name: Upload encrypted gallery proof
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: sealed-test-static-poster
+          path: sealed-test-static-poster.tar.gz.enc
+          if-no-files-found: error
+          retention-days: 1
