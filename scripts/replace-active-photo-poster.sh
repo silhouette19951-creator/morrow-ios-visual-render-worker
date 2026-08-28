@@ -81,6 +81,11 @@ if [[ -z "$source_version" || -z "$target_version" ]]; then
   exit 1
 fi
 
+source_title_style="$source_version/com.apple.posterkit.provider.instance.titleStyleConfiguration.plist"
+if [[ -f "$source_title_style" ]]; then
+  plutil -convert xml1 -o output/source-title-style.xml "$source_title_style" || true
+fi
+
 # Preserve Apple's own clock stretch, color, widgets, and quick-action choices.
 if [[ "$source_version" != "$target_version" ]]; then
   for settings_file in \

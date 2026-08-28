@@ -75,7 +75,7 @@ jobs:
             safe_name="$(echo "$file" | tr '/ ' '__')"
             cp "$file" "proof/$safe_name"
           done
-          for file in output/replaced-active-poster.txt output/replaced-active-poster-db.txt output/selection.txt output/xcode-version.txt; do
+          for file in output/replaced-active-poster.txt output/replaced-active-poster-db.txt output/source-title-style.xml output/selection.txt output/xcode-version.txt; do
             if [[ -f "$file" ]]; then cp "$file" proof/; fi
           done
           tar -czf replace-active-poster.tar.gz proof
