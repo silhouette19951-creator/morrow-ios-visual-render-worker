@@ -92,6 +92,10 @@ plutil -replace wallpaperRepresentingFileName -string "$wallpaper_name" "$conten
 plutil -replace wallpaperRepresentingIdentifier -string "$poster_id" "$contents/com.apple.posterkit.provider.contents.userInfo"
 plutil -replace identifier -integer "$poster_id" "$contents/$wallpaper_name/Wallpaper.plist"
 
+# The cloned native configuration may carry a rendered snapshot from the
+# source poster. It must not mask the newly supplied CAML background.
+find "$target" -type f -name 'RuntimeSnapshotMetadata-*' -delete
+
 database="$structure_dir/PBFPosterExtensionDataStoreSQLiteDatabase.sqlite3"
 if [[ ! -f "$database" ]]; then
   echo "PosterBoard SQLite database was not found." >&2
@@ -117,6 +121,16 @@ echo "Store structure: $structure_dir" >> output/replaced-active-poster.txt
 echo "Active UUID: $poster_uuid" >> output/replaced-active-poster.txt
 echo "Replacement configuration: $target" >> output/replaced-active-poster.txt
 
-xcrun simctl spawn "$SIMULATOR_UDID" killall SpringBoard >/dev/null 2>&1 || true
-sleep 12
+xcrun simctl shutdown "$SIMULATOR_UDID"
+xcrun simctl boot "$SIMULATOR_UDID"
+xcrun simctl bootstatus "$SIMULATOR_UDID" -b
+open -a Simulator --args -CurrentDeviceUDID "$SIMULATOR_UDID" || true
+xcrun simctl status_bar "$SIMULATOR_UDID" override \
+  --time "9:41" \
+  --operatorName "中国移动" \
+  --batteryState charged \
+  --batteryLevel 100 \
+  --wifiBars 3 \
+  --cellularBars 4 || true
+sleep 18
 xcrun simctl io "$SIMULATOR_UDID" screenshot output/after-active-poster-replacement.png
