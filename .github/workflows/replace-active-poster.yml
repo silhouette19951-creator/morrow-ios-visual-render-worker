@@ -1,0 +1,94 @@
+name: Replace active Morrow photo poster with static system poster
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner_label:
+        description: Standard public macOS runner to test
+        required: true
+        default: macos-26
+
+permissions:
+  contents: read
+
+jobs:
+  replace:
+    name: Replace active real iOS poster
+    runs-on: ${{ inputs.runner_label }}
+    timeout-minutes: 22
+
+    steps:
+      - name: Check out visual worker
+        uses: actions/checkout@v5
+
+      - name: Decrypt one private wallpaper in runner memory
+        env:
+          MORROW_ASSET_KEY: ${{ secrets.MORROW_ASSET_KEY }}
+        run: |
+          mkdir -p decrypted
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 \
+            -in assets-encrypted/04-mirror-salt-moon.jpg.enc \
+            -out decrypted/wallpaper.jpg \
+            -pass env:MORROW_ASSET_KEY
+
+      - name: Boot visual iPhone simulator
+        env:
+          DEVICE_HINT: Pro Max
+          WALLPAPER: decrypted/wallpaper.jpg
+        run: bash scripts/boot-simulator.sh
+
+      - name: Install visual controller
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Create native photo poster and stretched clock
+        env:
+          PHOTO_POINT: 16%,52%
+          MAESTRO_CLI_NO_ANALYTICS: 1
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: 180000
+        run: |
+          maestro test \
+            -e PHOTO_POINT="$PHOTO_POINT" \
+            --debug-output output/maestro-set-wallpaper \
+            flows/set-wallpaper.yaml
+
+      - name: Replace active poster provider but preserve native styling
+        env:
+          WALLPAPER: output/import-wallpaper.jpg
+        run: bash scripts/replace-active-photo-poster.sh
+
+      - name: Clear setup notice and capture real lock screen
+        continue-on-error: true
+        env:
+          MAESTRO_CLI_NO_ANALYTICS: 1
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: 180000
+        run: maestro test --debug-output output/maestro-clean flows/clear-notifications-and-capture.yaml
+
+      - name: Seal private replacement proof
+        if: always()
+        env:
+          MORROW_ASSET_KEY: ${{ secrets.MORROW_ASSET_KEY }}
+        run: |
+          mkdir -p proof
+          find output -type f -name '*.png' -print0 | while IFS= read -r -d '' file; do
+            safe_name="$(echo "$file" | tr '/ ' '__')"
+            cp "$file" "proof/$safe_name"
+          done
+          for file in output/replaced-active-poster.txt output/replaced-active-poster-db.txt output/selection.txt output/xcode-version.txt; do
+            if [[ -f "$file" ]]; then cp "$file" proof/; fi
+          done
+          tar -czf replace-active-poster.tar.gz proof
+          openssl enc -aes-256-cbc -salt -pbkdf2 -iter 200000 \
+            -in replace-active-poster.tar.gz \
+            -out sealed-replace-active-poster.tar.gz.enc \
+            -pass env:MORROW_ASSET_KEY
+
+      - name: Upload encrypted replacement proof
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: sealed-replace-active-poster
+          path: sealed-replace-active-poster.tar.gz.enc
+          if-no-files-found: error
+          retention-days: 1

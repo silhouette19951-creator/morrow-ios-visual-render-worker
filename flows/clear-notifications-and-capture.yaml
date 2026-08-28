@@ -1,0 +1,12 @@
+appId: com.apple.springboard
+---
+- swipe:
+    start: 82%,82%
+    end: 18%,82%
+    duration: 800
+- waitForAnimationToEnd
+- tapOn:
+    text: ".*(Clear|清除).*"
+    optional: true
+- waitForAnimationToEnd
+- takeScreenshot: output/lockscreen-clean-final
